@@ -37,7 +37,7 @@ pip install streamlit opencv-python numpy torch pillow
 ```
 
 ### 3. Prepare the Model  
-Place the trained YOLOv5 model file (`military_model_best.pt`) in the project directory (e.g., `D:/Final_project/military_model_best.pt`).  
+Place the trained YOLOv5 model file (`military_model_best.pt`) in the project directory.  
 Adjust the `model_path` in `app.py` if the location differs.
 
 ### 4. Run the App  
