@@ -1,4 +1,3 @@
-
 import streamlit as st
 import cv2
 import numpy as np
@@ -97,6 +96,7 @@ def process_sample_image(image_path):
         st.error("Sample image not found! Check the path.")
         return None, None, None
 
+
 # Main content with dynamic display based on mode
 if mode == "Object Detection":
     if model is not None and uploaded_file is not None:
@@ -112,13 +112,25 @@ if mode == "Object Detection":
                 detected_img = results.render()[0]
                 st.image(detected_img, caption="Detected Objects", use_container_width=True)
                 st.write("### Detection Details")
+
+                class_names = [
+                    'camouflage_soldier', 'weapon', 'military_tank', 'military_truck',
+                    'military_vehicle', 'civilian', 'soldier', 'civilian_vehicle',
+                    'military_artillery', 'trench', 'military_aircraft', 'military_warship'
+                ]
+                
+                threat_classes = [0, 1, 2, 3, 4, 8, 9, 10, 11]
+
                 for det in results.xyxy[0]:
                     class_id = int(det[5])
                     confidence = det[4]
-                    class_names = ['camouflage_soldier', 'weapon', 'military_tank', 'military_truck',
-                                 'military_vehicle', 'civilian', 'soldier', 'civilian_vehicle',
-                                 'military_artillery', 'military_aircraft', 'military_warship']
-                    st.write(f"- {class_names[class_id]} (Confidence: {confidence:.2f})")
+                    
+                    if class_id in threat_classes:
+                        threat_status = "THREAT"
+                    else:
+                        threat_status = "NON-THREAT"
+
+                    st.write(f"- {class_names[class_id]} (Confidence: {confidence:.2f}) → **{threat_status}**")
 
     elif uploaded_file is None:
         st.info("Please upload an image to start detection.")
@@ -139,6 +151,7 @@ elif mode == "Image Processing":
 
         st.write("### Rotated Image (90°)")
         st.image(rotated_img, caption="Rotated 90°", use_container_width=True)
+
 
 # Footer
 st.markdown(
